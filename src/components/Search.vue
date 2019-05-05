@@ -21,11 +21,38 @@
         <input type="text" placeholder="キーワード">
       </dd>
     </dl>
+    <button @click="search">検索</button>
+    <p>{{ results }}</p>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-  name: 'Search'
+  data: () => {
+    return {
+      results: {}
+    }
+  },
+  methods: {
+    search () {
+      const headers = {
+        'Content-Type': 'application/json;charset=UTF-8',
+        'Access-Control-Allow-Origin': '*'
+      }
+      const params = {
+        'keyword': 'rails'
+      }
+      const url = 'https://connpass.com/api/v1/event/'
+      axios.get(url, {params: params, headers: headers})
+        .then(res => {
+          this.results = res.data.results
+        })
+        .catch((res) => {
+          console.error(res)
+        })
+    }
+  }
 }
 </script>
